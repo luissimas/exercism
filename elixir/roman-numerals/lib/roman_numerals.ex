@@ -4,22 +4,21 @@ defmodule RomanNumerals do
   """
   @spec numeral(pos_integer) :: String.t()
   def numeral(number, string \\ "")
-  def numeral(number, string) when number == 0, do: string
 
-  def numeral(number, string) do
-    # Map numeral values
-    numerals = [
-      %{1000 => "M"},
-      %{500 => "D"},
-      %{100 => "C"},
-      %{50 => "L"},
-      %{10 => "X"},
-      %{5 => "V"},
-      %{1 => "I"}
-    ]
+  def numeral(0, string), do: string # Base case
 
-  end
+  def numeral(number, string) when number >= 1000, do: numeral(number - 1000, string <> "M")
+  def numeral(number, string) when number >= 900, do: numeral(number - 900, string <> "CM")
+  def numeral(number, string) when number >= 500, do: numeral(number - 500, string <> "D")
+  def numeral(number, string) when number >= 490, do: numeral(number - 490, string <> "XD")
+  def numeral(number, string) when number >= 400, do: numeral(number - 400, string <> "CD")
+  def numeral(number, string) when number >= 100, do: numeral(number - 100, string <> "C")
+  def numeral(number, string) when number >= 90, do: numeral(number - 90, string <> "XC")
+  def numeral(number, string) when number >= 50, do: numeral(number - 50, string <> "L")
+  def numeral(number, string) when number >= 40, do: numeral(number - 40, string <> "XL")
+  def numeral(number, string) when number >= 10, do: numeral(number - 10, string <> "X")
+  def numeral(number, string) when number >= 9, do: numeral(number - 9, string <> "IX")
+  def numeral(number, string) when number >= 5, do: numeral(number - 5, string <> "V")
+  def numeral(number, string) when number >= 4, do: numeral(number - 4, string <> "IV")
+  def numeral(number, string) when number >= 1, do: numeral(number - 1, string <> "I")
 end
-
-# IO.puts RomanNumerals.numeral(IO.gets("Number: ") |> String.trim |> String.to_integer)
-RomanNumerals.numeral(10)
