@@ -5,7 +5,8 @@ defmodule RomanNumerals do
   @spec numeral(pos_integer) :: String.t()
   def numeral(number, string \\ "")
 
-  def numeral(0, string), do: string # Base case
+  # Base case
+  def numeral(0, string), do: string
 
   def numeral(number, string) when number >= 1000, do: numeral(number - 1000, string <> "M")
   def numeral(number, string) when number >= 900, do: numeral(number - 900, string <> "CM")
