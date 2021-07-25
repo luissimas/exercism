@@ -19,7 +19,7 @@ defmodule BankAccount do
     account
   end
 
-  @spec loop(account()) :: none()
+  @spec loop(map()) :: no_return()
   defp loop(account) when account.closed do
     receive do
       {_, caller} ->

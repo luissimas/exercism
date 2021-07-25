@@ -17,7 +17,8 @@ defmodule NucleotideCount do
     Enum.reduce(strand, 0, fn
       ^nucleotide, acc -> acc + 1
       _x, acc -> acc
-    end)
+
+    end
   end
 
   @doc """
