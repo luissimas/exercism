@@ -29,8 +29,6 @@ defmodule Zipper do
   Get the value of the focus node.
   """
   @spec value(Zipper.t()) :: any
-  def value(nil), do: nil
-
   def value(zipper) do
     zipper.focus.value
   end
@@ -65,8 +63,27 @@ defmodule Zipper do
   @spec up(Zipper.t()) :: Zipper.t() | nil
   def up(%{path: nil}), do: nil
 
-  def up(zipper) do
-    zipper.path.parent
+  def up(%{path: %{direction: :right, parent: parent}, focus: focus}) do
+    %Zipper{
+      path: parent.path,
+      focus: %BinTree{
+        value: parent.focus.value,
+        left: parent.focus.left,
+        right: focus
+      }
+    }
+    |> check_end()
+  end
+
+  def up(%{path: %{direction: :left, parent: parent}, focus: focus}) do
+    %Zipper{
+      path: parent.path,
+      focus: %BinTree{
+        value: parent.focus.value,
+        right: parent.focus.right,
+        left: focus
+      }
+    }
     |> check_end()
   end
 
@@ -99,17 +116,9 @@ defmodule Zipper do
   defp check_end(zipper), do: zipper
 
   @spec update_value(Zipper.t(), any, atom()) :: Zipper.t()
-  defp update_value(zipper, value, direction) when zipper.path == nil do
+  defp update_value(zipper, value, direction) do
     new_focus = Map.put(zipper.focus, direction, value)
 
     %{zipper | focus: new_focus}
-  end
-
-  defp update_value(zipper, value, direction) do
-    new_focus = Map.put(zipper.focus, direction, value)
-    new_parent_focus = Map.put(zipper.path.parent.focus, zipper.path.direction, new_focus)
-    new_parent = Map.put(zipper.path.parent, :focus, new_parent_focus)
-
-    %Zipper{focus: new_focus, path: %{zipper.path | parent: new_parent}}
   end
 end
